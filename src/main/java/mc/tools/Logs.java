@@ -12,7 +12,7 @@ public class Logs {
         sendMessage(message, ChatColor.GREEN);
     }
 
-    // Sends an error message (in red) to the console
+   
     public static void sendError(String message) {
         sendMessage(message, ChatColor.RED);
     }
