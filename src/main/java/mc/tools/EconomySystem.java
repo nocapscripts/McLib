@@ -1,4 +1,4 @@
-package mc.tools;
+package mc.tools; // Add this line at the top
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -12,7 +12,7 @@ public class EconomySystem {
     // Constructor to initialize the Economy system
     public EconomySystem() {
         if (!setupEconomy()) {
-            Bukkit.getLogger().severe("VAULT pluginit ei leitud.");
+            Bukkit.getLogger().severe("Vault plugin not found.");
         }
     }
 
@@ -27,6 +27,11 @@ public class EconomySystem {
         }
         economy = rsp.getProvider();
         return economy != null;
+    }
+
+    // Static method to get the economy instance
+    public static Economy getEconomy() {
+        return economy;
     }
 
     // Get the balance of a player
