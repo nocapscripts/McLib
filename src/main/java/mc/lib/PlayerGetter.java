@@ -1,6 +1,8 @@
 package mc.lib; // Add this line at the top
 
 import java.net.InetSocketAddress;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PlayerGetter {
@@ -8,8 +10,11 @@ public class PlayerGetter {
     // Get the balance of a player
     public double getMoney(Player player) {
         if (EconomySystem.getEconomy() != null) {
-            return EconomySystem.getEconomy().getBalance(player);
+            double balance = EconomySystem.getEconomy().getBalance(player);
+            Bukkit.getLogger().info("Player: " + player.getName() + ", Balance: " + balance);
+            return balance;
         }
+        Bukkit.getLogger().warning("Economy is not available.");
         return 0.0; // Return 0.0 if economy is not available
     }
 
