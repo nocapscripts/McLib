@@ -39,10 +39,10 @@ public class MCLib extends JavaPlugin {
      */
     private boolean setupEconomy() {
         // Check if Vault is installed
-        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
+        /* if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
             Logs.sendWarning("Vault plugin not found. Economy system will not function.");
             return false;
-        }
+        } */
 
         // Get the economy service from Vault
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
