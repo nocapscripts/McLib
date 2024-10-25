@@ -19,8 +19,8 @@ public class MCLib extends JavaPlugin {
     public void onEnable() {
         instance = this; // Set the singleton instance
 
-        // Initialize the economy system
-        if (setupEconomy()) {
+        // Directly initialize the economy system
+        if (initializeEconomy()) {
             Logs.sendStartNotify("Plugin successfully enabled and economy system initialized.");
         } else {
             Logs.sendWarning("Economy system failed to initialize.");
@@ -34,17 +34,11 @@ public class MCLib extends JavaPlugin {
     }
 
     /**
-     * Setup Vault's economy service.
-     * 
-     * @return True if setup was successful, false otherwise.
+     * Initialize Vault's economy service.
+     *
+     * @return True if initialization was successful, false otherwise.
      */
-    private boolean setupEconomy() {
-        // Check if Vault is installed
-        /* if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
-            Logs.sendWarning("Vault plugin not found. Economy system will not function.");
-            return false;
-        } */
-
+    private boolean initializeEconomy() {
         // Get the economy service from Vault
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
@@ -61,7 +55,7 @@ public class MCLib extends JavaPlugin {
 
     /**
      * Getter for the singleton instance of the main plugin class.
-     * 
+     *
      * @return The singleton instance of MCLib.
      */
     public static MCLib getInstance() {
@@ -70,52 +64,91 @@ public class MCLib extends JavaPlugin {
 
     /**
      * Getter for the Economy instance.
-     * 
+     *
      * @return The Economy instance, or null if not initialized.
      */
-    
+    public Economy getEconomy() {
+        return economy;
+    }
 
-    // Example method to add money to a player
+    /**
+     * Add money to a player.
+     *
+     * @param playerName The name of the player.
+     * @param amount     The amount to add.
+     */
     public void addMoney(String playerName, double amount) {
         if (economy != null) {
-           economy.depositPlayer(playerName, amount).transactionSuccess();
+            if (economy.depositPlayer(playerName, amount).transactionSuccess()) {
+                Logs.sendInfo("Successfully added " + amount + " to " + playerName + "'s balance.");
+            } else {
+                Logs.sendWarning("Failed to add money to " + playerName + ".");
+            }
+        } else {
+            Logs.sendWarning("Economy instance is not initialized. Cannot add money.");
         }
-        Logs.sendWarning("Economy instance is not initialized. Cannot add money.");
-        
     }
 
-    // Example method to withdraw money from a player
+    /**
+     * Withdraw money from a player.
+     *
+     * @param playerName The name of the player.
+     * @param amount     The amount to withdraw.
+     */
     public void withdrawMoney(String playerName, double amount) {
         if (economy != null) {
-            economy.withdrawPlayer(playerName, amount).transactionSuccess();
+            if (economy.withdrawPlayer(playerName, amount).transactionSuccess()) {
+                Logs.sendInfo("Successfully withdrew " + amount + " from " + playerName + "'s balance.");
+            } else {
+                Logs.sendWarning("Failed to withdraw money from " + playerName + ".");
+            }
+        } else {
+            Logs.sendWarning("Economy instance is not initialized. Cannot withdraw money.");
         }
-        Logs.sendWarning("Economy instance is not initialized. Cannot withdraw money.");
-        
     }
 
-
-    public Double getMoney(Player player) {
+    /**
+     * Get the balance of a player.
+     *
+     * @param player The player whose balance to check.
+     * @return The balance of the player, or 0.0 if the economy is not initialized.
+     */
+    public double getMoney(Player player) {
         if (economy != null) {
-            return  economy.getBalance(player);
+            return economy.getBalance(player);
         }
         return 0.0;
     }
 
+    /**
+     * Check if a player has enough money.
+     *
+     * @param player The player to check.
+     * @param amount The amount to check against.
+     * @return True if the player has enough money, false otherwise.
+     */
     public boolean hasEnough(Player player, double amount) {
         if (economy != null) {
-            return  economy.getBalance(player) >= amount;
+            return economy.getBalance(player) >= amount;
         }
         return false;
     }
 
-
+    /**
+     * Set the balance of a player.
+     *
+     * @param player The player to set the balance for.
+     * @param amount The amount to set as the balance.
+     */
     public void setMoney(Player player, double amount) {
         if (economy != null) {
-            economy.depositPlayer(player, amount).transactionSuccess();
+            // Withdraw the current balance and then deposit the new amount
+            double currentBalance = getMoney(player);
+            withdrawMoney(player.getName(), currentBalance);
+            addMoney(player.getName(), amount);
+            Logs.sendInfo("Set " + player.getName() + "'s balance to " + amount + ".");
+        } else {
+            Logs.sendWarning("Economy instance is not initialized. Cannot set money.");
         }
-    
-        
     }
-
-    // Additional methods to handle other economy interactions can be added here
 }
