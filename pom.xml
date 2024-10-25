@@ -6,7 +6,7 @@
 
     <groupId>com.github.nocapscripts</groupId> <!-- Use GitHub username as part of the groupId for JitPack -->
     <artifactId>MCLib</artifactId>
-    <version>1.2.7</version>
+    <version>1.2.8</version>
     <packaging>jar</packaging>
 
     <name>MCLib</name>

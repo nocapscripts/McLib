@@ -1,4 +1,4 @@
 mc\tools\Logs.class
+mc\tools\MCLib.class
 mc\tools\PlayerGetter.class
 mc\tools\EconomySystem.class
-mc\tools\Plugin.class
