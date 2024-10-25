@@ -1,16 +1,19 @@
-package mc.lib; // Add this line at the top
+package mc.lib; // Ensure your package is correctly defined
 
 import java.net.InetSocketAddress;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+/**
+ * Class to manage player-related functionalities.
+ */
 public class PlayerGetter {
 
     // Get the balance of a player
     public double getMoney(Player player) {
-        if (EconomySystem.getEconomy() != null) {
-            double balance = EconomySystem.getEconomy().getBalance(player);
+        if (MCLib.getInstance().getEconomy() != null) {
+            double balance = MCLib.getInstance().getEconomy().getBalance(player);
             Bukkit.getLogger().info("Player: " + player.getName() + ", Balance: " + balance);
             return balance;
         }
@@ -20,8 +23,8 @@ public class PlayerGetter {
 
     // Set money for a player
     public boolean setMoney(Player player, double amount) {
-        if (EconomySystem.getEconomy() != null) {
-            EconomySystem.getEconomy().depositPlayer(player, amount);
+        if (MCLib.getInstance().getEconomy() != null) {
+            MCLib.getInstance().getEconomy().depositPlayer(player, amount);
             return true; // Indicate success
         }
         return false; // Indicate failure due to null economy
@@ -29,8 +32,8 @@ public class PlayerGetter {
 
     // Remove money from a player
     public boolean removeMoney(Player player, double amount) {
-        if (EconomySystem.getEconomy() != null) {
-            EconomySystem.getEconomy().withdrawPlayer(player, amount);
+        if (MCLib.getInstance().getEconomy() != null) {
+            MCLib.getInstance().getEconomy().withdrawPlayer(player, amount);
             return true; // Indicate success
         }
         return false; // Indicate failure due to null economy
@@ -38,10 +41,7 @@ public class PlayerGetter {
 
     // Check if the player has enough money
     public boolean hasEnough(Player player, double amount) {
-        if (EconomySystem.getEconomy() != null) {
-            return EconomySystem.getEconomy().getBalance(player) >= amount;
-        }
-        return false; // Indicate not enough money due to null economy
+        return MCLib.getInstance().getEconomy() != null && MCLib.getInstance().getEconomy().getBalance(player) >= amount; // Check if player has enough money
     }
 
     // Get player name
