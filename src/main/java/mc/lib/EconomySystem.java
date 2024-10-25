@@ -1,4 +1,4 @@
-package mc.tools;
+package mc.lib;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;

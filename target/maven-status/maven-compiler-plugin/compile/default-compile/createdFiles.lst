@@ -1,4 +1,4 @@
-mc\tools\Logs.class
-mc\tools\MCLib.class
-mc\tools\PlayerGetter.class
-mc\tools\EconomySystem.class
+mc\lib\PlayerGetter.class
+mc\lib\EconomySystem.class
+mc\lib\Logs.class
+mc\lib\MCLib.class

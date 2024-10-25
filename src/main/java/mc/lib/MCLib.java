@@ -1,4 +1,4 @@
-package mc.tools;
+package mc.lib;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

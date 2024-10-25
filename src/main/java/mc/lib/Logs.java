@@ -1,4 +1,4 @@
-package mc.tools;
+package mc.lib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

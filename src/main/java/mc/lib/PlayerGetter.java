@@ -1,4 +1,4 @@
-package mc.tools; // Add this line at the top
+package mc.lib; // Add this line at the top
 
 import java.net.InetSocketAddress;
 import org.bukkit.entity.Player;
