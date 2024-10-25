@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Main class for the MCLib plugin.
+ * This class initializes the economy system using Vault.
  */
 public class MCLib extends JavaPlugin {
 
@@ -18,10 +19,11 @@ public class MCLib extends JavaPlugin {
         instance = this; // Set the singleton instance
 
         // Initialize the economy system
-        setupEconomy();
-
-        // Notify that the plugin has been enabled and the economy system is initialized
-        Logs.sendStartNotify("Plugin successfully enabled and economy system initialized.");
+        if (setupEconomy()) {
+            Logs.sendStartNotify("Plugin successfully enabled and economy system initialized.");
+        } else {
+            Logs.sendWarning("Economy system failed to initialize.");
+        }
     }
 
     @Override
@@ -45,11 +47,14 @@ public class MCLib extends JavaPlugin {
         // Get the economy service from Vault
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            Logs.sendWarning("No economy provider found.");
+            Logs.sendWarning("No economy provider found. Ensure an economy plugin is installed and enabled.");
             return false; // Economy service not found
         }
 
         economy = rsp.getProvider(); // Set the economy instance
+        if (economy == null) {
+            Logs.sendWarning("Failed to set economy provider. Economy service is null.");
+        }
         return economy != null; // Return whether the economy instance is successfully set
     }
 
@@ -65,9 +70,29 @@ public class MCLib extends JavaPlugin {
     /**
      * Getter for the Economy instance.
      * 
-     * @return The Economy instance.
+     * @return The Economy instance, or null if not initialized.
      */
     public Economy getEconomy() {
         return economy;
     }
+
+    // Example method to add money to a player
+    public boolean addMoney(String playerName, double amount) {
+        if (economy != null) {
+            return economy.depositPlayer(playerName, amount).transactionSuccess();
+        }
+        Logs.sendWarning("Economy instance is not initialized. Cannot add money.");
+        return false;
+    }
+
+    // Example method to withdraw money from a player
+    public boolean withdrawMoney(String playerName, double amount) {
+        if (economy != null) {
+            return economy.withdrawPlayer(playerName, amount).transactionSuccess();
+        }
+        Logs.sendWarning("Economy instance is not initialized. Cannot withdraw money.");
+        return false;
+    }
+
+    // Additional methods to handle other economy interactions can be added here
 }
