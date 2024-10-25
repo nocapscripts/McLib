@@ -1,5 +1,5 @@
 name: MCLib
-version: '1.2.10'
+version: '1.2.11'
 main: mc.lib.MCLib
 api-version: '1.21.1'
 authors: [ NoCapScripts ]

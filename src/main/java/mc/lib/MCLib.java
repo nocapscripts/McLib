@@ -2,6 +2,7 @@ package mc.lib; // Ensure your package is correctly defined
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -72,26 +73,48 @@ public class MCLib extends JavaPlugin {
      * 
      * @return The Economy instance, or null if not initialized.
      */
-    public Economy getEconomy() {
-        return economy;
-    }
+    
 
     // Example method to add money to a player
-    public boolean addMoney(String playerName, double amount) {
+    public void addMoney(String playerName, double amount) {
         if (economy != null) {
-            return economy.depositPlayer(playerName, amount).transactionSuccess();
+           economy.depositPlayer(playerName, amount).transactionSuccess();
         }
         Logs.sendWarning("Economy instance is not initialized. Cannot add money.");
-        return false;
+        
     }
 
     // Example method to withdraw money from a player
-    public boolean withdrawMoney(String playerName, double amount) {
+    public void withdrawMoney(String playerName, double amount) {
         if (economy != null) {
-            return economy.withdrawPlayer(playerName, amount).transactionSuccess();
+            economy.withdrawPlayer(playerName, amount).transactionSuccess();
         }
         Logs.sendWarning("Economy instance is not initialized. Cannot withdraw money.");
+        
+    }
+
+
+    public Double getMoney(Player player) {
+        if (economy != null) {
+            return  economy.getBalance(player);
+        }
+        return 0.0;
+    }
+
+    public boolean hasEnough(Player player, double amount) {
+        if (economy != null) {
+            return  economy.getBalance(player) >= amount;
+        }
         return false;
+    }
+
+
+    public void setMoney(Player player, double amount) {
+        if (economy != null) {
+            economy.depositPlayer(player, amount).transactionSuccess();
+        }
+    
+        
     }
 
     // Additional methods to handle other economy interactions can be added here
