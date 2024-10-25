@@ -1,8 +1,0 @@
-main: mc.tools.Plugin
-name: MCLib
-version: 1.21.1
-
-commands:
-    helloWorld:
-        description: Hello, World!
-        usage: /<command>
