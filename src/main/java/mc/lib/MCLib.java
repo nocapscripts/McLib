@@ -3,7 +3,7 @@ package mc.lib; // Ensure your package is correctly defined
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -12,71 +12,11 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class MCLib extends JavaPlugin {
 
-    private static MCLib instance; // Singleton instance of the plugin
+    
     private Economy economy; // Instance of Economy
 
-    @Override
-    public void onEnable() {
-        instance = this; // Set the singleton instance
 
-        // Directly initialize the economy system
-        if (initializeEconomy()) {
-            Logs.sendStartNotify("Plugin successfully enabled and economy system initialized.");
-        } else {
-            Logs.sendWarning("Economy system failed to initialize.");
-        }
-    }
 
-    @Override
-    public void onDisable() {
-        // Log the plugin disable event
-        Logs.sendInfo("Plugin disabled.");
-    }
-
-    /**
-     * Initialize Vault's economy service.
-     *
-     * @return True if initialization was successful, false otherwise.
-     */
-    private boolean initializeEconomy() {
-        // Get the economy service from Vault
-        RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            Logs.sendWarning("No economy provider found. Ensure an economy plugin is installed and enabled.");
-            return false; // Economy service not found
-        }
-
-        economy = rsp.getProvider(); // Set the economy instance
-        if (economy == null) {
-            Logs.sendWarning("Failed to set economy provider. Economy service is null.");
-        }
-        return economy != null; // Return whether the economy instance is successfully set
-    }
-
-    /**
-     * Getter for the singleton instance of the main plugin class.
-     *
-     * @return The singleton instance of MCLib.
-     */
-    public static MCLib getInstance() {
-        return instance;
-    }
-
-    /**
-     * Getter for the Economy instance.
-     *
-     * @return The Economy instance, or null if not initialized.
-     */
-    public Economy getEconomy() {
-        return economy;
-    }
-
-    /**
-     * Add money to a player.
-     *
-     * @param playerName The name of the player.
-     * @param amount     The amount to add.
-     */
     public void addMoney(String playerName, double amount) {
         if (economy != null) {
             if (economy.depositPlayer(playerName, amount).transactionSuccess()) {
