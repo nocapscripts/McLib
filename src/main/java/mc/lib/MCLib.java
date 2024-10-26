@@ -1,16 +1,16 @@
 package mc.lib; // Ensure your package is correctly defined
 
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
+
 import org.bukkit.entity.Player;
 
-import org.bukkit.plugin.java.JavaPlugin;
+
 
 /**
  * Main class for the MCLib plugin.
  * This class initializes the economy system using Vault.
  */
-public class MCLib extends JavaPlugin {
+public class MCLib  {
 
     
     private Economy economy; // Instance of Economy
@@ -60,7 +60,7 @@ public class MCLib extends JavaPlugin {
         return 0.0;
     }
 
-    /**
+    /**mv
      * Check if a player has enough money.
      *
      * @param player The player to check.
